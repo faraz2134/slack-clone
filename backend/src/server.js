@@ -24,6 +24,9 @@ app.get("/", (req, res) => {
   res.send("Hello World! 123");
 });
 
+// 👇 Add this so favicon.ico requests don’t break
+app.get("/favicon.ico", (req, res) => res.status(204).end());
+
 // Example protected route
 app.get("/protected", (req, res) => {
   res.send("You are authenticated ✅");
