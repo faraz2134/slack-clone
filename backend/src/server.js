@@ -1,15 +1,24 @@
 import express from "express";
+import path from "path";
+import { fileURLToPath } from "url";
 import { ENV } from "./config/env.js";
 import { connectDB } from "./config/db.js";
 import { clerkMiddleware } from "@clerk/express";
 import { inngest, functions } from "./config/inngest.js";
 import { serve } from "inngest/express";
 
-const app = express(); // Creates an instance of the Express application
+// For ES modules (to use __dirname)
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const app = express();
+
+// ✅ Serve static files from /public
+app.use(express.static(path.join(__dirname, "../public")));
 
 app.use(express.json());
 
-// 👇 Clerk Middleware with secret key (no publishable key required in backend)
+// 👇 Clerk Middleware with secret key
 app.use(
   clerkMiddleware({
     secretKey: process.env.CLERK_SECRET_KEY,
@@ -19,13 +28,10 @@ app.use(
 // Set up the "/api/inngest" routes with the serve handler
 app.use("/api/inngest", serve({ client: inngest, functions }));
 
-// Public route (no auth needed)
+// Public route
 app.get("/", (req, res) => {
   res.send("Hello World! 123");
 });
-
-// 👇 Add this so favicon.ico requests don’t break
-app.get("/favicon.ico", (req, res) => res.status(204).end());
 
 // Example protected route
 app.get("/protected", (req, res) => {
