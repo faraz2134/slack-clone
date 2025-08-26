@@ -19,12 +19,8 @@ const syncUser = inngest.createFunction(
       name: `${first_name || ""} ${last_name || ""}`,
       image: image_url,
     };
- await User.create(newUser);
 
-   
-   
-
-    await addUserToPublicChannels(newUser.clerkId.toString());
+    await User.create(newUser);
   }
 );
 
@@ -35,10 +31,8 @@ const deleteUserFromDB = inngest.createFunction(
     await connectDB();
     const { id } = event.data;
     await User.deleteOne({ clerkId: id });
-
-    
   }
 );
 
-// Create an empty array where we'll export future Inngest functions
+// Export Inngest functions
 export const functions = [syncUser, deleteUserFromDB];
