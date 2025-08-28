@@ -1,7 +1,7 @@
 import { Inngest } from "inngest";
 import { connectDB } from "./db.js";
 import { User } from "../models/user.model.js"; // Import the User model
-import { upsertStreamUser } from "./stream.js"; // Import the Stream user function}
+import { deleteStreamUser,upsertStreamUser } from "./stream.js"; // Import the Stream user function}
 
 // Create a client to send and receive events
 export const inngest = new Inngest({ id: "slack-clone" });
