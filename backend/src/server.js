@@ -10,6 +10,7 @@ import { serve } from "inngest/express";
 import chatRoutes from "./routes/chat.routes.js";
 
 import * as Sentry from "@sentry/node";
+import cors from "cors";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -18,6 +19,7 @@ const app = express();
 
 app.use(express.static(path.join(__dirname, "../public")));
 app.use(express.json());
+app.use(cors({ origin: "http://localhost:5173", credentials: true}));
 
 app.use(clerkMiddleware());
 
